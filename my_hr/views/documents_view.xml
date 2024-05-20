@@ -1,0 +1,76 @@
+<odoo>
+    <data>
+        <record id="hr_documents_action" model="ir.actions.act_window">
+            <field name="name">Documents</field>
+            <field name="res_model">my_hr.documents</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+
+        <record id="hr_employees_documents_action" model="ir.actions.act_window">
+            <field name="name">Employees Documents</field>
+            <field name="res_model">emp.documents</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+
+        <menuitem id="hr_employee_documents_data" parent="hr.menu_hr_employee_payroll" name="Employees Documents" action="hr_employees_documents_action"/>
+        <menuitem id="hr_documents_data" parent="hr.menu_human_resources_configuration" name="Documents" action="hr_documents_action"/>
+
+
+        <record id="view_employee_documents_tree" model="ir.ui.view">
+            <field name="name">hr.employee.documents.tree</field>
+            <field name="model">emp.documents</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="employee_id"/>
+                    <field name="document_type"/>
+                    <field name="file_content"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="view_custom_document_form" model="ir.ui.view">
+            <field name="name">custom.document.form</field>
+            <field name="model">my_hr.documents</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                            <group>
+                                <field name="document_template"/>
+                            </group>
+                        </group>    
+                       
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_custom_employee_documents_form" model="ir.ui.view">
+            <field name="name">custom.employee.document.form</field>
+            <field name="model">emp.documents</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="employee_id"/>
+                            </group>
+                            <group>
+                                <field name="file_content"/>
+                            </group>
+                            <group>
+                                <field name="document_type"/>
+                            </group>
+                        </group>    
+                       
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

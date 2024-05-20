@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+        <record id="custom_contracts_form_view2" model="ir.ui.view">
+            <field name="name">custom_contracts_form_view</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='salary_info']" position='after'>
+                    <group>
+                        <field name='emp_share'/>
+                        <field name='medical_ins'/>
+                        <field name="tax"/>
+                        <field name="shohdaa"/>
+                        <field name='net_salary'/>
+                    </group>
+                    <group>
+                        <field name="day_amount"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

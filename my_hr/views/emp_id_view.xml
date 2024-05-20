@@ -1,0 +1,60 @@
+<odoo>
+    <data>
+        <record id="custom_emp_id_view" model="ir.ui.view">
+            <field name="name">custom_emp_id_view</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+	        <xpath expr="//field[@name='job_title']" position='after'>
+                <br/>
+                <label for="machine_id" string="Employee ID" />
+                <field name='machine_id' widget="char" />
+		    </xpath>
+            </field>
+        </record>
+
+        <record id="arabic_name_emp_view" model="ir.ui.view">
+            <field name="name">arabic_name_emp_view</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='job_title']" position='before'>
+                    <h1 class="d-flex flex-row align-items-center">
+                        <field name="name_ar" placeholder="إسم الموظف" style="font-size: min(2vw, 1.2rem);"/>
+                    </h1>
+                </xpath>
+                <xpath expr="//field[@name='job_title']" position='after'>
+                    <h2>
+                        <field name="title_ar" placeholder="الوظيفه"/>
+                    </h2>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="emp_attachments_view" model="ir.ui.view">
+            <field name="name">Emp Attachments View</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='hr_settings']" position='after'>
+                    <page name="attachments" string="Hiring Documents">
+                        <group>
+                            <field name='emp_documents' string="" widget="many2many_binary"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="custom_emp_id_serch" model="ir.ui.view">
+            <field name="name">custom.emp.id.serch</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_filter"/>
+            <field name="arch" type="xml">
+	        <xpath expr="//field[@name='name']" position='before'>
+                <field name="machine_id" string="Employee ID" />
+		    </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

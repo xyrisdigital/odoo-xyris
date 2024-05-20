@@ -1,0 +1,177 @@
+<odoo>
+    <data>
+
+        <record id="attendance_action" model="ir.actions.act_window">
+            <field name="name">Attendance Action</field>
+            <field name="res_model">hr.attendance</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+
+        <record id="effects_action" model="ir.actions.act_window">
+            <field name="name">Effects Action</field>
+            <field name="res_model">att.effects</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+
+        <record id="view_attendance_effects_tree" model="ir.ui.view">
+            <field name="name">hr.attendance.effects.tree</field>
+            <field name="model">att.effects</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="employee_id"/>
+                    <field name="effect_type"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="hours"/>
+                    <field name="minutes"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="view_att_effects_search" model="ir.ui.view">
+            <field name="name">att.effects.search</field>
+            <field name="model">att.effects</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="att_machine_id" string="EmployeeID"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_attendance_effects_kanban" model="ir.ui.view">
+            <field name="name">hr.attendance.effects.kanban</field>
+            <field name="model">att.effects</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile" sample="1">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class="oe_kanban_content">
+                                    <div>
+                                        <p class="oe_kanban_global_title">
+                                            <img t-att-src="kanban_image('hr.employee', 'avatar_128', record.employee_id.raw_value)" t-att-title="record.employee_id.value" t-att-alt="record.employee_id.value" class="oe_kanban_avatar o_image_40_cover mr4"/>
+                                            <field name="employee_id" options="{'no_open': True}"/>
+                                        </p>
+                                    </div>
+                                    <p class="oe_kanban_global_subtitle">
+                                        <strong><field name="effect_type"/></strong>
+                                    </p>
+                                    <hr class="mt4 mb8"/>
+                                    <div class="oe_kanban_details">
+                                        <div class="oe_kanban_details_col">
+                                            <strong><label for="date_from">Date From:</label></strong>&#x2063;&#x2063;
+                                            <field name="date_from"/><br/>
+                                            <strong><label for="date_to">Date To:</label></strong>&#x2063;&#x2063;
+                                            <field name="date_to"/>
+                                        </div>
+                                        <div class="oe_kanban_details_col">
+                                            <strong><label for="hours">Hours:</label></strong>&#x2063;&#x2063;
+                                            <field name="hours"/><br/>
+                                            <strong><label for="minutes">Minutes:</label></strong>&#x2063;&#x2063;
+                                            <field name="minutes"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+   
+
+        <menuitem id="effects_data" parent="hr_attendance.menu_hr_attendance_root" name="Attendance Effects" action="effects_action"/>
+
+        <!-- <record id="att_days_card_view" model="ir.ui.view">
+            <field name="name">att_days_card_view</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+            
+            <div name="button_box" position="inside">
+                <button name="action_view_attendnace" type='object' class="oe_stat_button" icon="fa-check">
+                    <div class="o_stat_info">
+                        <field name="worked_days" class="o_stat_value"/>
+                        <span class="o_stat_text">Days Worked</span>
+                    </div>
+                </button>
+                <button class="oe_stat_button" name="action_view_attendnace_plus" type="object" icon="fa-bolt">
+                    <div class="o_stat_info">
+                        <field name="worked_days_plus" class="o_stat_value"/>
+                        <span class="o_stat_text">ُExtra Days</span>
+                    </div>
+                </button>
+            </div>
+           
+            </field>
+        </record> -->
+        <record id="att_days_custom_view" model="ir.ui.view">
+            <field name="name">att_days_custom_view</field>
+            <field name="model">hr.attendance</field>
+            <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='worked_hours']" position='after'>
+                    <!-- <field name="status" string="Status" widget="widgetonbutton"/> -->
+                    <field name="percentage" widget="percentpie"/>
+                    <field name="is_working_day"/>
+                    <field name="has_leave"/>
+                    <field name="remote"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="custom_emp_id_att_serch" model="ir.ui.view">
+            <field name="name">custom.emp.id.att.serch</field>
+            <field name="model">hr.attendance</field>
+            <field name="inherit_id" ref="hr_attendance.hr_attendance_view_filter"/>
+            <field name="arch" type="xml">
+	        <xpath expr="//field[@name='employee_id']" position='before'>
+                <field name="att_machine_id" string="Employee ID" />
+		    </xpath>
+            </field>
+        </record>
+        <record id="att_custom_kanban" model="ir.ui.view">
+            <field name="name">Att Custom Kanban</field>
+            <field name="model">hr.attendance</field>
+            <field name="inherit_id" ref="hr_attendance.view_hr_attendance_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('o_kanban_record_subtitle')]" position="inside">
+                    <hr class="mt4 mb8"/>
+                    <div>
+                        <i class="fa fa-clock-o" aria-label="Worked Hours" role="img" title="Worked Hours"></i>
+                        <strong><label for="has_leave" string="Leave">Worked Hours:  </label></strong>&#x2063;&#x2063;
+                        <strong><field name="worked_hours"/></strong>
+                    </div>
+                    <hr class="mt4 mb8"/>
+                    <div>
+                        <strong><label for="has_leave" string="Leave">Leave:</label></strong>&#x2063;&#x2063;
+                        <strong><field name="has_leave" widget="boolean_toggle" readonly="1"/></strong>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="res_config_settings_inherit_view" model="ir.ui.view">
+            <field name="name">res_config_settings_inherit_view</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="hr_attendance.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//form//app//block[@name='kiosk_mode_setting_container']" position="after">
+                    <!-- Add your fields or attributes here -->
+                    <block title="Attendance Month Range" name="attendance_month_settings">
+                        <label for="my_custom_field1_id"/>
+                        <div class="row">
+                            <field name="my_custom_field1_id"/>
+                        </div>
+                        <label for="my_custom_field2_id"/>
+                        <div class="row">
+                            <field name="my_custom_field2_id"/>
+                        </div>
+                    </block>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

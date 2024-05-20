@@ -1,0 +1,27 @@
+<odoo>
+    <data>
+        <record id="payroll_violations_action" model="ir.actions.act_window">
+            <field name="name">Violations Action</field>
+            <field name="res_model">payroll.violations</field>
+            <field name="view_mode">tree,kanban,form</field>
+        </record>
+        <!-- <menuitem action="payroll_violations_action" id="violations_menu" name="Violations" parent="hr_payroll_community.menu_hr_payroll_community_configuration"/> -->
+
+        <record id="view_violations_tree" model="ir.ui.view">
+            <field name="name">hr.violations.tree</field>
+            <field name="model">payroll.violations</field>
+            <field name="arch" type="xml">
+                <tree string="Violations">
+                    <field name="name"/>
+                    <field name="late_attendance"/>
+                    <field name="early_departure"/>
+                    <field name="first"/>
+                    <field name="second"/>
+                    <field name="third"/>
+                    <field name="fourth"/>
+                    <field name="more"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>
