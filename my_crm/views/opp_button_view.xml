@@ -1,0 +1,145 @@
+<odoo>
+    <data>
+        <record id="custom_crm_lead_view" model="ir.ui.view">
+            <field name="name">Custom CRM Lead View</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position='before'>
+                    <field name="stage_number" invisible="1"/>
+                    <field name="lead_source" invisible="1"/>
+                    <div>
+                        <group>
+                            <group>
+                                <field name='account_id' style="width:100%%; font-size:12px" readonly="type == 'opportunity'"/>
+                            </group>
+                        </group>
+                    </div>
+
+                </xpath>
+            </field>
+        </record>
+        <record id="custom_crm_lead_view_2" model="ir.ui.view">
+            <field name="name">Other Custom CRM Lead View</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='extra']" position='before'>
+                    <field name='stage_number' invisible="1" />
+                    <field name='is_company' invisible="1" />
+                    <page name="account" string="Account Information">
+                        <group>
+                            <field name="account_name"/>
+                            <field name="parent_account"/>
+                            <field name="industry_type" invisible="is_company == False"/>
+                            <field name="no_employees" invisible="is_company == False"/>
+                            <field name="contacts"/>
+                        </group>
+                    </page>
+                    <page name='meating' string="Meeting Results">   
+                        <group string="FACT FINDINGS"> 
+                            <field name='fact_findings' readonly="stage_number != 1"/>
+                            <field name='meatings_results' readonly="stage_number != 1"/>
+                        </group>
+                    </page>
+                    
+                </xpath>
+            </field>
+        </record>
+
+
+
+        <record id="whatsapp_crm_lead_view" model="ir.ui.view">
+            <field name="name">Whatsapp Web Ribbon</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='active']" position='after'>
+                    <field name="lead_source" invisible="1"/>
+                    <widget name="web_ribbon" title="Whatsapp" bg_color="text-bg-info" invisible="lead_source == 'others'"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="crm_custom_kanban" model="ir.ui.view">
+            <field name="name">CRM Custom Kanban</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('o_kanban_record_subtitle')]" position="inside">
+                    <field name="pricing_interval" invisible="1"/>
+                    <field name="stage_number" invisible="1"/>
+                    <hr class="mt4 mb8"/>
+                    <div>
+                        <i class="fa fa-briefcase" aria-label="Account Name" role="img" title="Account Name"></i>&#x2063;
+                        <strong><label for="account_id" string="Account">Account :  </label></strong>&#x2063;&#x2063;
+                        <strong><field name="account_id"/></strong>
+                    </div>
+                </xpath>
+            </field>
+        </record>  
+        <record id="crm_custom_won_button" model="ir.ui.view">
+            <field name="name">crm.custom.won.button</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_set_won_rainbowman']" position="attributes">
+                    <attribute name="invisible">stage_number != 3</attribute>
+                    <attribute name="groups">sales_team.group_sale_salesman</attribute>
+                </xpath>
+            </field>
+        </record>  
+        
+        <record id="crm_custom_lost_button" model="ir.ui.view">
+            <field name="name">crm.custom.lost.button</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='195']" position="attributes">
+                    <attribute name="groups">sales_team.group_sale_salesman</attribute>
+                </xpath>
+            </field>
+        </record>  
+
+        <!-- <record id="crm_custom_kanban_stage" model="ir.ui.view">
+            <field name="name">crm.custom.kanban.stage</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+            <field name="arch" type="xml">
+                <kanban position="attributes">
+                    <attribute name="records_draggable">false</attribute>
+                </kanban>
+            </field>
+        </record>   -->
+        
+        <!-- <record id="read_only_crm_fields" model="ir.ui.view">
+            <field name="name">read.only.crm.fields</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <field name="stage_id" position="attributes">
+                    <attribute name="options">{'clickable': False, 'fold_field': 'fold'}</attribute>
+                </field>
+                <field name="user_id" position="attributes">
+                    <attribute name="readonly">stage_number != 1</attribute>
+                </field>
+                <field name="name" position="attributes">
+                    <attribute name="readonly">stage_number != 1</attribute>
+                </field>
+                <field name="partner_id" position="attributes">
+                    <attribute name="readonly">stage_number != 1</attribute>
+                </field>
+                <field name="email_from" position="attributes">
+                    <attribute name="readonly">stage_number != 1</attribute>
+                </field>
+                <field name="phone" position="attributes">
+                    <attribute name="readonly">stage_number != 1</attribute>
+                </field>
+                <field name="date_deadline" position="attributes">
+                    <attribute name="readonly">stage_number != 1</attribute>
+                </field>
+            </field>
+        </record> -->
+    </data>
+</odoo>

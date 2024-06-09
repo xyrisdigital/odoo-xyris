@@ -11,7 +11,7 @@ from odoo.exceptions import ValidationError
 class EmpAttendance(models.Model):
     _inherit = 'hr.employee'
 
-    work_entries_ids = fields.One2many('hr.work.entry', 'employee_id')
+    # work_entries_ids = fields.One2many('hr.work.entry', 'employee_id')
 
 
     def action_open_last_month_attendances(self):

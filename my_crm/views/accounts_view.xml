@@ -1,0 +1,139 @@
+<odoo>
+    <data>
+        <record id="accounts_action" model="ir.actions.act_window">
+            <field name="name">Accounts</field>
+            <field name="res_model">my_contacts.accounts</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+        <record id="accounts_read_action" model="ir.actions.act_window">
+            <field name="name">Accounts</field>
+            <field name="res_model">crm.view.accounts</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+
+        <menuitem id="accounts_data" parent="crm.crm_menu_sales" name="Accounts" action="accounts_action"/>
+
+        <record id="crm_accounts_form_view" model="ir.ui.view">
+            <field name="name">CRM Accounts Form View</field>
+            <field name="model">my_contacts.accounts</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_child_accounts" type='object' class="oe_stat_button" icon="fa-bars">
+                                <div class="o_stat_info">
+                                    <field name="child_count" class="o_stat_value" invisible=""/>
+                                    <span class="o_stat_text">Child Accounts</span>
+                                </div>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="name_arabic"/>
+                                <field name="commercial_name"/>
+                                <field name="source_of_account"/>
+                            </group>
+                            <group>
+                                <field name="account_logo" widget="image" options="{'size': [150, 150]}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="is_company_account" invisible="1"/>
+                                <field name="account_type" widget="radio" options="{'horizontal': true}"/>
+                                <field name="account_company_type" widget="radio" options="{'horizontal': true}" invisible="is_company_account == False" />
+                                <field name="address"/>
+                                <field name="building_no" widget="char"/>
+                                <field name="floor" widget="char"/>
+                                <field name="street"/>
+                                <field name="district"/>
+                                <field name="city"/>
+                                <field name="governorate"/>
+                                <field name="postal_code" widget="char"/>
+                                <field name="country"/>
+                            </group>
+                            <group>
+                                <field name="parent_id"/>
+                                <field name="industry_type" invisible="is_company_account == False"/>
+                                <field name="no_employees" widget="char" invisible="is_company_account == False"/>
+                                <field name="email"/>
+                                <field name="cr_no" widget="char" invisible="is_company_account == False"/>
+                                <field name="phone"/>
+                                <field name="landline"/>
+                                <field name="website" widget="url"/>
+                                <field name="fax"/>
+                                <field name="user_id" widget="many2one_avatar_user"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page name='leads' string='Leads'>
+                                <field name="lead_ids" string="Leads"/>
+                            </page>
+                            <page name='contact' string="Contact Information">
+                                <group>
+                                    <field name="contacts" string="Linked Contacts" widget="many2one_form"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="crm_accounts_tree_view" model="ir.ui.view">
+            <field name="name">Accounts</field>
+            <field name="model">my_contacts.accounts</field>
+            <field name="arch" type="xml">
+                <tree>     
+                    <field name="name"/>
+                    <field name="name_arabic"/>
+                    <field name="account_type"/>
+                    <field name="account_company_type"/>
+                    <field name="address"/>
+                    <field name="email"/>
+                    <field name="phone"/>
+                </tree>
+            </field>
+        </record>
+
+        
+        <record id="crm_accounts_read_form_view" model="ir.ui.view">
+            <field name="name">CRM Accounts Form View</field>
+            <field name="model">crm.view.accounts</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="ar_name"/>
+                            </group>
+                            <group>
+                                <field name="address"/>
+                                <field name="cr"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="crm_accounts_read_tree_view" model="ir.ui.view">
+            <field name="name">Accounts</field>
+            <field name="model">crm.view.accounts</field>
+            <field name="arch" type="xml">
+                <tree>     
+                    <field name="name"/>
+                    <field name="ar_name"/>
+                    <field name="address"/>
+                    <field name="cr"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>
