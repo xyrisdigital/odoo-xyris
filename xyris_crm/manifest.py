@@ -1,5 +1,5 @@
 {
-    'name': 'My CRM',
+    'name': 'Xyris CRM',
     'depends': ['sales_team', 'crm', 'contacts', 'base', 'mail'],
     'data': [
         'security/ir.model.access.csv',
