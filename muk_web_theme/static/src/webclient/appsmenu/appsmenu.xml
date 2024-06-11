@@ -10,6 +10,7 @@
 		<xpath expr="//div[@t-ref='menuRef']" position="attributes">
 			<attribute name="t-attf-style">
 	        	background-image: url("{{ backgroundImageUrl }}");
+				background-size: 100% 100%;
 		    </attribute>
 	    </xpath>
 	</t>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.settings.web.window.title</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <div id="languages" position="before">
+                    <h2>Window</h2>
+                    <div class="row mt16 o_settings_container" name="window">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Title</span>
+                                <div class="text-muted">
+                                    The custom web window title
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16 row">
+                                        <label for="web_window_title" string="Title" class="col-3 col-lg-3 o_light_label"/>
+                                        <field name="web_window_title" class="oe_inline"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </field>
+        </record>
+
+
+<!--        <template id="favicon_icon" inherit_id="web.layout" name="Web layout">-->
+<!--            &lt;!&ndash; change the default favicon icon with   &ndash;&gt;-->
+<!--            <xpath expr="//head//link[@rel='shortcut icon']" position="replace">-->
+<!--&lt;!&ndash;                <link type="image/x-icon" rel="shortcut icon" href="/web_window_title/static/src/img/favicon.ico"/>&ndash;&gt;-->
+<!--                <link type="image/x-icon" rel="shortcut icon New 2" t-att-href="x_icon or '/web_window_title/static/img/favicon.ico'"/>-->
+<!--            </xpath>-->
+<!--        </template>-->
+
+<!--        <template id="assets_backend" name="Custom Module Assets" inherit_id="web.assets_backend">-->
+<!--            <xpath expr="." position="inside">-->
+<!--                <script type="text/javascript" src="/custom_module/static/src/js/custom_form_button_save.js"></script>-->
+<!--            </xpath>-->
+<!--        </template>-->
+        <!-- Replace the existing o_form_button_save -->
+<!--        <template id="assets_backend" name="Your Module Assets" inherit_id="web.assets_backend">-->
+<!--            <xpath expr="//button[@name='o_form_button_save']" position="replace">-->
+<!--&lt;!&ndash;                <button type="button" name="on_button_save" class="btn btn-primary" t-if="widget.model === 'your.model'">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <t t-esc="'Save'"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                </button>&ndash;&gt;-->
+<!--                <button-->
+<!--                    type="button"-->
+<!--                    class="o_form_button_save btn btn-light px-1 py-0 lh-sm"-->
+<!--                    data-hotkey="s"-->
+<!--                    t-on-click.stop="save"-->
+<!--                    data-tooltip="Save manually"-->
+<!--                    aria-label="Save manually"-->
+<!--                    t-ref="save">-->
+<!--&lt;!&ndash;                    <i class="fa fa-cloud-upload fa-fw" />&ndash;&gt;-->
+<!--&lt;!&ndash;                    <button style="font-size:24px">Button <i class="fa fa-save"></i></button>&ndash;&gt;-->
+<!--                    <i class="fa fa-save" style="font-size:24px"></i>-->
+<!--                </button>-->
+<!--            </xpath>-->
+<!--        </template>-->
+
+<!--        <template id="save_button_inherit" inherit_id="web.FormStatusIndicator">-->
+<!--        <template id="save_button_inherit" inherit_id="web.assets_frontend">-->
+<!--            <xpath expr="//button[@@data-tooltip='Save manually']//i[hasclass('fa-cloud-upload')]"-->
+<!--                   position="attributes">-->
+<!--                <attribute name="class" remove="fa-cloud-upload"/>-->
+<!--                <attribute name="class" add="fa-save" separator=" "/>-->
+<!--            </xpath>-->
+<!--        </template>-->
+<!--        <template id="your_custom_template_id">-->
+<!--            &lt;!&ndash; Inherit the named block "my_block" &ndash;&gt;-->
+<!--            <xpath expr="//t[@t-name='my_block']/div/div/button/" position="replace">-->
+<!--                &lt;!&ndash; Add or modify elements here &ndash;&gt;-->
+<!--&lt;!&ndash;                <div>New content added after the named block</div>&ndash;&gt;-->
+<!--                <i class="fa fa-save" style="font-size:24px"></i>-->
+<!--            </xpath>-->
+<!--        </template>-->
+
+
+
+    </data>
+<!--    <templates>-->
+<!--            <t t-name="owl.web.FormStatusIndicator" t-inherit="web.FormStatusIndicator" owl="1">-->
+<!--                <xpath expr="//button[@name='o_form_button_save']" position="replace">-->
+<!--                    <button-->
+<!--                    type="button"-->
+<!--                    class="o_form_button_save btn btn-light px-1 py-0 lh-sm"-->
+<!--                    data-hotkey="s"-->
+<!--                    t-on-click.stop="save"-->
+<!--                    data-tooltip="Save manually"-->
+<!--                    aria-label="Save manually"-->
+<!--                    t-ref="save">-->
+<!--&lt;!&ndash;                    <i class="fa fa-cloud-upload fa-fw" />&ndash;&gt;-->
+<!--&lt;!&ndash;                    <button style="font-size:24px">Button <i class="fa fa-save"></i></button>&ndash;&gt;-->
+<!--                    <i class="fa fa-save" style="font-size:100px"></i>-->
+<!--                </button>-->
+<!--                </xpath>-->
+<!--            </t>-->
+
+<!--        </templates>-->
+</odoo>

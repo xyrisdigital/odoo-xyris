@@ -6,3 +6,10 @@
         --o-input-border-color: #{$gray-400};
 	}
 }
+
+
+.o_form_button_save .fa-cloud-upload:before {
+    /* Use a different FontAwesome icon */
+    content: "\f0c7"; /* Example of a different FontAwesome icon */
+    font-size: 18px;
+}
