@@ -4,6 +4,7 @@
         'hr', 'hr_attendance', 'hr_holidays'
     ],
     'data': [
+        'views/employee_view.xml',
         'views/att_view.xml',
         'views/timeoff_view.xml',
         # 'views/pl_view.xml',
