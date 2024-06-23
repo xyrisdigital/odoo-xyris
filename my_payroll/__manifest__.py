@@ -5,6 +5,7 @@
     ],
     'data': [
         'views/employee_view.xml',
+        'views/res_users_view.xml',
         'views/att_view.xml',
         'views/timeoff_view.xml',
         # 'views/pl_view.xml',

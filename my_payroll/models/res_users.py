@@ -7,6 +7,51 @@ import datetime
 class UserAtt(models.Model):
     _inherit = 'res.users'
 
+    total_wfh = fields.Integer(compute="_compute_sum_wfh")
+
+
+
+    @api.depends('employee_id')
+    def _compute_sum_wfh(self):
+        for user in self:
+            get_data = self.env['save.res.conf'].sudo().search_read([])
+
+
+            day_from = get_data[-1]['save_data_to']
+            day_to = get_data[-1]['save_date_from']
+
+            count = 0
+
+            for att in user.employee_id.attendance_ids:
+                if att.check_in and att.check_in.strftime("%Y-%m-%dT%H:%M:%S+08:00") >= day_from.strftime("%Y-%m-%dT%H:%M:%S+08:00") and att.check_out and att.check_out.strftime("%Y-%m-%dT%H:%M:%S+08:00") <= day_to.strftime("%Y-%m-%dT%H:%M:%S+08:00") and att.remote == True:
+                    count += 1
+
+            user.total_wfh = count
+
+
+    def action_calculate_wfh(self):
+        get_data = self.env['save.res.conf'].sudo().search_read([])
+
+
+        day_from = get_data[-1]['save_data_to']
+        day_to = get_data[-1]['save_date_from']
+
+        self.ensure_one()
+        # raise ValidationError(f"{day_from}, {day_to}")
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Attendances This Month"),
+            "res_model": "hr.attendance",
+            "views": [[self.env.ref('hr_attendance.hr_attendance_employee_simple_tree_view').id, "tree"]],
+            "context": {
+                "create": 0
+            },
+            "domain": [('employee_id', '=', self.id),
+                    ('check_in', ">=", day_from),
+                    ('check_in', "<=", day_to),
+                    ('remote', '=', True)]
+        }
+
 
 
 
