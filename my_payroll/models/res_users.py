@@ -46,7 +46,7 @@ class UserAtt(models.Model):
             "context": {
                 "create": 0
             },
-            "domain": [('employee_id', '=', self.id),
+            "domain": [('employee_id', '=', self.employee_id.id),
                     ('check_in', ">=", day_from),
                     ('check_in', "<=", day_to),
                     ('remote', '=', True)]
