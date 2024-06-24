@@ -40,7 +40,7 @@ class Opportunity(models.Model):
     account_name = fields.Char('Account Name', related='account_id.name', tracking=True)
     parent_account = fields.Char('Parent Account', related='account_id.parent_id.name', tracking=True)
     industry_type = fields.Selection('Industry Type', related="account_id.industry_type", tracking=True)
-    no_employees = fields.Integer('No. of Employees', related="account_id.no_employees", tracking=True)
+    no_employees = fields.Char('No. of Employees', related="account_id.no_employees", tracking=True)
     contacts = fields.One2many('res.partner', related="account_id.contacts", tracking=True)
     is_company = fields.Boolean('Is Company?', related="account_id.is_company_account", tracking=True)
 
