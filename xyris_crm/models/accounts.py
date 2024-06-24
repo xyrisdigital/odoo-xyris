@@ -39,7 +39,7 @@ class Accounts(models.Model):
         ('others', 'Others')
     ])
 
-    no_employees = fields.Integer(string="Number of Employees", tracking=True)
+    no_employees = fields.Char(string="Number of Employees", tracking=True)
     cr_no = fields.Integer(string="C.R.#", tracking=True)
     landline = fields.Char(string='Landline (رقم الخط الأرضي)', tracking=True)
     website = fields.Char(string='Website (الموقع الإلكتروني)', tracking=True)
