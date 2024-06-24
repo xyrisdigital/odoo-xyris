@@ -80,13 +80,13 @@ class Accounts(models.Model):
     
     
     # Phone Validation
-    @api.constrains('phone')
-    def is_phone(self):
-        if self.phone:
-            # match = re.match('\\+{0,1}[0-9]{10,12}', self.phone)
-            match = re.match('\\+{0,1}[0-9]{11}', self.phone)
-            if match == None:
-                raise ValidationError('Invalid Phone Number')
+    # @api.constrains('phone')
+    # def is_phone(self):
+    #     if self.phone:
+    #         # match = re.match('\\+{0,1}[0-9]{10,12}', self.phone)
+    #         match = re.match('\\+{0,1}[0-9]{11}', self.phone)
+    #         if match == None:
+    #             raise ValidationError('Invalid Phone Number')
             
     # Name Validation English
     @api.constrains('name')
