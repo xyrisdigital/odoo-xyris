@@ -48,7 +48,7 @@ class Accounts(models.Model):
     fax = fields.Char(string='FAX', tracking=True)
 
     address = fields.Char(string='Address (العنوان)', tracking=True)
-    building_no = fields.Integer(string = 'Building Number (رقم المبني)', tracking=True)
+    building_no = fields.Char(string = 'Building Number (رقم المبني)', tracking=True)
     floor = fields.Integer(string='Floor Number (رقم الدور)', tracking=True)
     district = fields.Char(string='District (الحي)', tracking=True)
     street = fields.Char('Street (اسم الشارع)', tracking=True)
