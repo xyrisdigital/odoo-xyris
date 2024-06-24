@@ -68,7 +68,6 @@
             <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
             <field name="arch" type="xml">
                 <xpath expr="//div[hasclass('o_kanban_record_subtitle')]" position="inside">
-                    <field name="pricing_interval" invisible="1"/>
                     <field name="stage_number" invisible="1"/>
                     <hr class="mt4 mb8"/>
                     <div>
