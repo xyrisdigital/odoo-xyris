@@ -160,13 +160,7 @@ class Accounts(models.Model):
             'website': record.website
         })
 
-        new_vals = {
-            'name': values.get('name'),
-            'ar_name': values.get('name_arabic'),
-            'address': values.get('address'),
-            'cr': values.get('cr_no')
-        }
-        new_record = self.env['crm.view.accounts'].sudo().create(new_vals)
+
 
         return record
 
