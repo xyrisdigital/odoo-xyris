@@ -9,7 +9,7 @@ class Accounts(models.Model):
     _order = "id desc"
 
     name = fields.Char(string='Account Name', required=True, tracking=True)
-    name_arabic = fields.Char(string="Arabic Name", required=True, tracking=True)
+    name_arabic = fields.Char(string="Arabic Name", tracking=True)
     commercial_name = fields.Char(string="Commercial Name", tracking=True)
     source_of_account = fields.Many2one(comodel_name='utm.source',string='Source Of Account', required=False, tracking=True)
 
