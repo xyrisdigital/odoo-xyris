@@ -5,11 +5,7 @@
             <field name="res_model">my_contacts.accounts</field>
             <field name="view_mode">tree,form,kanban</field>
         </record>
-        <record id="accounts_read_action" model="ir.actions.act_window">
-            <field name="name">Accounts</field>
-            <field name="res_model">crm.view.accounts</field>
-            <field name="view_mode">tree,form,kanban</field>
-        </record>
+    
 
         <menuitem id="accounts_data" parent="crm.crm_menu_sales" name="Accounts" action="accounts_action"/>
 
