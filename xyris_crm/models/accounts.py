@@ -14,7 +14,7 @@ class Accounts(models.Model):
     source_of_account = fields.Many2one(comodel_name='utm.source',string='Source Of Account', required=False, tracking=True)
 
 
-    account_logo = fields.Image("Account Logo", tracking=True)
+    account_logo = fields.Image("Account Logo")
 
     parent_id = fields.Many2one('my_contacts.accounts', string='Parent Account (الشركه الأم)', tracking=True)
 
