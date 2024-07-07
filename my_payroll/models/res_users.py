@@ -9,7 +9,19 @@ class UserAtt(models.Model):
 
     total_wfh = fields.Integer(compute="_compute_sum_wfh")
 
-
+    @property
+    def SELF_READABLE_FIELDS(self):
+        return super().SELF_READABLE_FIELDS + [
+            'hours_last_month',
+            'hours_last_month_display',
+            'attendance_state',
+            'last_check_in',
+            'last_check_out',
+            'total_overtime',
+            'attendance_manager_id',
+            'display_extra_hours',
+            'total_wfh'
+        ]
 
     @api.depends('employee_id')
     def _compute_sum_wfh(self):
