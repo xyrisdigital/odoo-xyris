@@ -64,6 +64,17 @@
                         </group>
 
                         <notebook>
+                            <page name='Core Results' string='Core Results'>
+                                <group>
+                                    <group>
+                                        <field name="core_results"/>
+                                    </group>
+                                    <group>
+                                        <field name="next_activity" invisible="core_results != 'interested'"/>
+                                        <field name="summary"/>
+                                    </group>
+                                </group>
+                            </page>
                             <page name='leads' string='Leads'>
                                 <field name="lead_ids" string="Leads"/>
                             </page>

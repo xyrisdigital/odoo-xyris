@@ -74,11 +74,30 @@ class Accounts(models.Model):
 
     is_company_account = fields.Boolean(compute="_compute_is_company_account", tracking=True)
 
+    has_lead = fields.Boolean(compute="_compute_has_lead")
+
+    core_results = fields.Selection(string="Core Result", selection=[('not', 'Not Interested'), ('interested', 'Interested'), ('qualified', 'Qualified')])
+    next_activity = fields.Date(string="Next Activity")
+    summary = fields.Text(string="Summary")
+
     _sql_constraints = [
         ('UniqueAccountName', 'unique(name)', 'Sorry, but there is already an account with the same name')
     ]
     
     
+
+    @api.depends('lead_ids')
+    def _compute_has_lead(self):
+        for account in self:
+            sum = 0
+            for lead in account.lead_ids:
+                sum += 1
+
+            if sum == 0:
+                account.has_lead = False
+            else:
+                account.has_lead = True
+
     # Phone Validation
     # @api.constrains('phone')
     # def is_phone(self):
