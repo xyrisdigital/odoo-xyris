@@ -64,7 +64,7 @@
                         </group>
 
                         <notebook>
-                            <page name='Core Results' string='Core Results'>
+                            <page name='Call Results' string='Call Results'>
                                 <group>
                                     <group>
                                         <field name="core_results"/>

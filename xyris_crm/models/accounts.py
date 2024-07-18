@@ -76,7 +76,7 @@ class Accounts(models.Model):
 
     has_lead = fields.Boolean(compute="_compute_has_lead")
 
-    core_results = fields.Selection(string="Core Result", selection=[('not', 'Not Interested'), ('interested', 'Interested'), ('qualified', 'Qualified')])
+    core_results = fields.Selection(string="Call Result", selection=[('not', 'Not Interested'), ('interested', 'Interested'), ('qualified', 'Qualified')])
     next_activity = fields.Date(string="Next Activity")
     summary = fields.Text(string="Summary")
 
