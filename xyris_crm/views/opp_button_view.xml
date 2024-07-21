@@ -61,6 +61,18 @@
             </field>
         </record>
 
+        <record id="website_crm_lead_view" model="ir.ui.view">
+            <field name="name">Website Web Ribbon</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='active']" position='after'>
+                    <field name="lead_source" invisible="1"/>
+                    <widget name="web_ribbon" title="Website" bg_color="text-bg-warning" invisible="lead_source != 'website'"/>
+                </xpath>
+            </field>
+        </record>
+
 
         <record id="crm_custom_kanban" model="ir.ui.view">
             <field name="name">CRM Custom Kanban</field>

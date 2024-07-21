@@ -19,6 +19,7 @@ class Opportunity(models.Model):
 
     lead_source = fields.Selection(string="Lead Source", selection=[
         ('whatsapp', 'Whatsapp'),
+        ('website', 'Website'),
         ('others', 'Others')
     ], default="others", tracking=True)
 
