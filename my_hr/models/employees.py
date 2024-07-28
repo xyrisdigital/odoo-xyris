@@ -42,21 +42,21 @@ class EmployeeExcusesInherit(models.Model):
     # _name = 'new_module.new_module'
     _inherit = 'hr.leave'
 
-    def action_approve(self):
+    # def action_approve(self):
 
-        if self.holiday_status_id.leave_validation_type == 'both':
-            user_id = self.env.user.id
-            get_date_now = datetime.now().date()
-            if get_date_now >= (self.create_date.date() + timedelta(days=3)) and \
-                    user_id != self.employee_ids.parent_id.user_id.id and user_id != self.employee_ids.coach_id.user_id.id:
-                super(EmployeeExcusesInherit, self).action_approve()
-            elif user_id == self.employee_ids.parent_id.user_id.id and user_id == self.employee_ids.coach_id.user_id.id:
-                super(EmployeeExcusesInherit, self).action_approve()
-            elif get_date_now < (self.create_date.date() + timedelta(days=3)) and \
-                    user_id != self.employee_ids.parent_id.user_id.id and user_id != self.employee_ids.coach_id.user_id.id:
-                raise UserError('You Dont Have This Access')
-                # super(EmployeeExcusesInherit, self).action_approve()
-        super(EmployeeExcusesInherit, self).action_approve()
+    #     if self.holiday_status_id.leave_validation_type == 'both':
+    #         user_id = self.env.user.id
+    #         get_date_now = datetime.now().date()w
+    #         if get_date_now >= (self.create_date.date() + timedelta(days=3)) and \
+    #                 user_id != self.employee_ids.parent_id.user_id.id and user_id != self.employee_ids.coach_id.user_id.id:
+    #             super(EmployeeExcusesInherit, self).action_approve()
+    #         elif user_id == self.employee_ids.parent_id.user_id.id and user_id == self.employee_ids.coach_id.user_id.id:
+    #             super(EmployeeExcusesInherit, self).action_approve()
+    #         elif get_date_now < (self.create_date.date() + timedelta(days=3)) and \
+    #                 user_id != self.employee_ids.parent_id.user_id.id and user_id != self.employee_ids.coach_id.user_id.id:
+    #             raise UserError('You Dont Have This Access')
+    #             # super(EmployeeExcusesInherit, self).action_approve()
+    #     super(EmployeeExcusesInherit, self).action_approve()
 
     # Send Notification
     # @api.onchange('preparation_type')

@@ -8,7 +8,7 @@ import os
 
 class crmWebsite(http.Controller):
 
-    @http.route('/ws-lead', auth='user', methods=['POST'], csrf=False, cors="*")
+    @http.route('/ws-lead', auth='user', methods=['POST'], csrf=False)
     def insert_lead(self, **kwargs):
 
         request_data = json.loads(http.request.httprequest.data)
