@@ -12,7 +12,7 @@ import re
 class Opportunity(models.Model):
     _inherit = 'crm.lead'
 
-    expected_revenue = fields.Monetary('Expected Commission', currency_field='company_currency', tracking=True)
+    expected_revenue = fields.Monetary('Expected Revenue', currency_field='company_currency', tracking=True)
 
     account_id = fields.Many2one('my_contacts.accounts', string='Account (إسم الشركه)', required=True, tracking=True)
 
@@ -25,12 +25,7 @@ class Opportunity(models.Model):
 
     
 
-
-
-
-
-    fact_findings = fields.Binary(string="Fact Findings")
-    meatings_results = fields.Text("Minutes of Meeting", tracking=True)
+    meatings_results = fields.Text("Feedback", tracking=True)
 
     customer_data = fields.Binary(string="Customer Data")
    
@@ -83,22 +78,6 @@ class Opportunity(models.Model):
 	
 #   ----------Converting to opportunity-----------
 
-    @api.constrains('type')
-    def _check_has_activities(self):
-        for record in self:
-            activity_ids = self.env['crm.activity.report'].search([('lead_id', '=', record.id)])
-
-            flag = False
-            
-            for i in activity_ids:
-                if i.mail_activity_type_id.id in [2, 7, 3]:
-                    flag = True    
-
-            if (flag == False and record.type == 'opportunity') :
-                raise ValidationError("The lead must have at least one done meeting or call activity")
-                
-            if flag == True and (not record.fact_findings and not record.meatings_results):
-                raise ValidationError("You must insert either the fact findings or MoM")
             
 
 

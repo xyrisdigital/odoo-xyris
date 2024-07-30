@@ -4,11 +4,13 @@ import json
 import requests
 import sys 
 import os 
+from ...project_api.controllers.login import validate_token
 
 
 class crmWebsite(http.Controller):
 
-    @http.route('/ws-lead', auth='user', methods=['POST'], csrf=False)
+    @validate_token
+    @http.route('/ws-lead', auth="public", methods=['POST'], csrf=False)
     def insert_lead(self, **kwargs):
 
         request_data = json.loads(http.request.httprequest.data)
@@ -56,3 +58,16 @@ class crmWebsite(http.Controller):
         return json.dumps({
             'Output': "Lead has been created successfully"
         })
+
+    @http.route('/hello', auth="none", methods=['GET'], csrf=False)
+    def hello(self, **kwargs):
+        access_token = request.httprequest.headers.get("access_token")
+        
+        if access_token != "P@ssw0rd@2023":
+            return "inavlid token"
+        
+        else:
+
+            return json.dumps({
+                "message": "HEllo"
+            })

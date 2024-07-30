@@ -38,8 +38,7 @@
                     </page>
                     <page name='meating' string="Meeting Results">   
                         <group string="FACT FINDINGS"> 
-                            <field name='fact_findings' readonly="stage_number != 1"/>
-                            <field name='meatings_results' readonly="stage_number != 1"/>
+                            <field name='meatings_results' string="Feedback"/>
                         </group>
                     </page>
                     
