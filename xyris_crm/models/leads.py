@@ -12,7 +12,7 @@ import re
 class Opportunity(models.Model):
     _inherit = 'crm.lead'
 
-    expected_revenue = fields.Monetary('Expected Revenue', currency_field='company_currency', tracking=True)
+    expected_revenue = fields.Monetary('Expected Revenue', currency_field='currency', tracking=True)
 
     account_id = fields.Many2one('my_contacts.accounts', string='Account (إسم الشركه)', required=True, tracking=True)
 
@@ -25,6 +25,10 @@ class Opportunity(models.Model):
 
     
 
+
+
+    currency = fields.Many2one('res.currency', string="Currency")
+    
     meatings_results = fields.Text("Feedback", tracking=True)
 
     customer_data = fields.Binary(string="Customer Data")

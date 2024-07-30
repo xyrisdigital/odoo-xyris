@@ -19,6 +19,22 @@
                 </xpath>
             </field>
         </record>
+
+        <record id="custom_crm_currency_view" model="ir.ui.view">
+            <field name="name">Custom CRM Lead Currency View</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='expected_revenue']" position='after'>
+
+                    <div id="currency" class="d-flex align-items-baseline">
+                        <field name="currency" class="oe_inline o_input_6ch" context="{'active_test': False, 'default_name': 'EGP'}"/>
+     
+                    </div>
+
+                </xpath>
+            </field>
+        </record>
         <record id="custom_crm_lead_view_2" model="ir.ui.view">
             <field name="name">Other Custom CRM Lead View</field>
             <field name="model">crm.lead</field>
@@ -100,6 +116,17 @@
                 </xpath>
             </field>
         </record>  
+
+        <record id="expected_revenue_sympol" model="ir.ui.view">
+            <field name="name">expected_revenue_sympol</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <field name="expected_revenue" position="attributes">
+                    <attribute name="options">{'currency_field': 'currency'}</attribute>
+                </field>
+            </field>
+        </record>
         
         <!-- <record id="crm_custom_lost_button" model="ir.ui.view">
             <field name="name">crm.custom.lost.button</field>
