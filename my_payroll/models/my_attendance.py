@@ -7,6 +7,22 @@ from datetime import timedelta, datetime, time
 from odoo.osv.expression import AND, OR
 from odoo.tools.float_utils import float_is_zero
 import pytz
+import math
+
+
+def haversine(self, lon1, lat1, lon2, lat2):
+    # Convert latitude and longitude from degrees to radians
+    lon1, lat1, lon2, lat2 = map(math.radians, [lon1, lat1, lon2, lat2])
+
+    # Haversine formula
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+    a = math.sin(dlat / 2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2)**2
+    c = 2 * math.asin(math.sqrt(a))
+
+    # Radius of earth in kilometers. Use 3956 for miles. Determines return value units.
+    r = 6371
+    return c * r
 
 
 class myAttendance(models.Model):
@@ -327,127 +343,145 @@ class myAttendance(models.Model):
             else:
                 att.has_leave = False      
 
+    @api.model
+    def create(self, values):
+        record = super(myAttendance, self).create(values)
 
-    # @api.model
-    # def create(self, values):
-    #     record = super(myAttendance, self).create(values)
-    #     if 'check_out' in list(values.keys()):
-    #         self.create_att_effects(record)
-    #     return record
+        fixed_lon = 29.9892736
+        fixed_lat = 31.2737792
 
-    def create_att_effects(self, attendance_record):
-        effect_types = self.determine_effect_type(attendance_record)
+        record_lon = values.get('in_latitude')
+        record_lat = values.get('in_longitude')
 
-        att_hours = attendance_record.check_out - attendance_record.check_in
+        if record_lon and record_lat:
 
-        self.env['att.effects'].create({
-            'employee_id': attendance_record.employee_id.id, 
-            'effect_type': 'att',
-            'hours': att_hours.total_seconds() / 3600.0,
-            'date_from': attendance_record.check_in,
-            'date_to': attendance_record.check_out
-        })         
+            distance = self.haversine(record_lon, record_lat, fixed_lon, fixed_lat)
 
-        for i in effect_types:
-            description = ''
-            if i == 'lateatt':
-               get_data = self.env['res.config.settings'].search_read([])
-               get_data_len = len(get_data)
+            distance_in_meters = distance * 1000
 
-               for rec in range(get_data_len):
-                   get_date_from = get_data[rec]['my_custom_field1_id']
-                   get_date_to = get_data[rec]['my_custom_field2_id']
+            if distance_in_meters > 200:
+                record.remote = True
+            else:
+                record.remote = False
+
+        # self.create_att_effects(record)
+        return record
 
 
-               lateatt_count = self.env['att.effects'].search_count([('effect_type', '=', 'lateatt'),
-                                        ('employee_id', '=', attendance_record.employee_id.id),
-                                        ('date_from', '>=', get_date_from), ('date_to', '<=', get_date_to)])
+
+    # def create_att_effects(self, attendance_record):
+    #     effect_types = self.determine_effect_type(attendance_record)
+
+    #     att_hours = attendance_record.check_out - attendance_record.check_in
+
+    #     self.env['att.effects'].create({
+    #         'employee_id': attendance_record.employee_id.id, 
+    #         'effect_type': 'att',
+    #         'hours': att_hours.total_seconds() / 3600.0,
+    #         'date_from': attendance_record.check_in,
+    #         'date_to': attendance_record.check_out
+    #     })         
+
+    #     for i in effect_types:
+    #         description = ''
+    #         if i == 'lateatt':
+    #            get_data = self.env['res.config.settings'].search_read([])
+    #            get_data_len = len(get_data)
+
+    #            for rec in range(get_data_len):
+    #                get_date_from = get_data[rec]['my_custom_field1_id']
+    #                get_date_to = get_data[rec]['my_custom_field2_id']
+
+
+    #            lateatt_count = self.env['att.effects'].search_count([('effect_type', '=', 'lateatt'),
+    #                                     ('employee_id', '=', attendance_record.employee_id.id),
+    #                                     ('date_from', '>=', get_date_from), ('date_to', '<=', get_date_to)])
             
-               if lateatt_count == 0:
-                   description = 'انذار'
-               elif lateatt_count == 1:
-                   description = 'خصم ربع يوم'
-               elif lateatt_count == 2:
-                   description = 'خصم نصف يوم'
-               elif lateatt_count == 3:
-                   description = 'خصم يوم'
+    #            if lateatt_count == 0:
+    #                description = 'انذار'
+    #            elif lateatt_count == 1:
+    #                description = 'خصم ربع يوم'
+    #            elif lateatt_count == 2:
+    #                description = 'خصم نصف يوم'
+    #            elif lateatt_count == 3:
+    #                description = 'خصم يوم'
 
-            self.env['att.effects'].create({
-                'employee_id': attendance_record.employee_id.id,
-                'effect_type': i,
-                'hours': effect_types[i]['hours'],
-                'minutes': effect_types[i]['minutes'],
-                'date_from': attendance_record.check_in,
-                'date_to': attendance_record.check_out,
-                'description': description
-            })
-
-
-    def determine_effect_type(self, attendance_record):
-        results = {}
-        resource_calendar = attendance_record.employee_id.resource_calendar_id
-
-        attendace_check_in = fields.Datetime.from_string(attendance_record.check_in)
-        attendace_check_out = fields.Datetime.from_string(attendance_record.check_out)
-
-        day_of_week = attendace_check_in.weekday()
-
-        attendance_rule = resource_calendar.attendance_ids.filtered(lambda rule: rule.dayofweek == str(day_of_week))
-
-        if attendance_rule:
-            # check_in_hour = attendace_check_in.hour + 2.0
-            check_in_hour = attendace_check_in.hour
-            check_in_minutes = attendace_check_in.minute
-            # Get Set Time Hours And Minutes
-            get_data = self.env['hr.employee'].search([('id', '=', attendance_record.employee_id.id)])
-            for rec in get_data:
-                get_set_time_hours = rec.set_time_hours
-                get_set_time_minutes = rec.set_time_minutes
-            target_time = time(get_set_time_hours, get_set_time_minutes)
-
-            hour_value_in = attendace_check_in.hour + (attendace_check_in.minute / 60.0)
-            hour_value_out = attendace_check_out.hour + (attendace_check_out.minute / 60.0)
+    #         self.env['att.effects'].create({
+    #             'employee_id': attendance_record.employee_id.id,
+    #             'effect_type': i,
+    #             'hours': effect_types[i]['hours'],
+    #             'minutes': effect_types[i]['minutes'],
+    #             'date_from': attendance_record.check_in,
+    #             'date_to': attendance_record.check_out,
+    #             'description': description
+    #         })
 
 
-            if (check_in_hour, check_in_minutes) < (target_time.hour, target_time.minute):
-                if (attendance_record.check_out - attendance_record.check_in).total_seconds() / 3600.0 < 8.0:
-                    pass
-                    # results['shortage'] = {}
-                    # results['shortage']['hours'] = (8 - ((attendance_record.check_out - attendance_record.check_in).total_seconds() / 3600.0))*60 //60
-                    # results['shortage']['minutes'] = (8 - ((attendance_record.check_out - attendance_record.check_in).total_seconds() / 3600.0))*60 % 60
-                else:
-                    results['overtime'] = {}
-                    results['overtime']['hours'] = (((attendance_record.check_out - attendance_record.check_in).total_seconds() / 3600.0) - 8.0) *60 //60
-                    results['overtime']['minutes'] = (((attendance_record.check_out - attendance_record.check_in).total_seconds() / 3600.0) - 8.0) *60 %60
+    # def determine_effect_type(self, attendance_record):
+    #     results = {}
+    #     resource_calendar = attendance_record.employee_id.resource_calendar_id
+
+    #     attendace_check_in = fields.Datetime.from_string(attendance_record.check_in)
+    #     attendace_check_out = fields.Datetime.from_string(attendance_record.check_out)
+
+    #     day_of_week = attendace_check_in.weekday()
+
+    #     attendance_rule = resource_calendar.attendance_ids.filtered(lambda rule: rule.dayofweek == str(day_of_week))
+
+    #     if attendance_rule:
+    #         # check_in_hour = attendace_check_in.hour + 2.0
+    #         check_in_hour = attendace_check_in.hour
+    #         check_in_minutes = attendace_check_in.minute
+    #         # Get Set Time Hours And Minutes
+    #         get_data = self.env['hr.employee'].search([('id', '=', attendance_record.employee_id.id)])
+    #         for rec in get_data:
+    #             get_set_time_hours = rec.set_time_hours
+    #             get_set_time_minutes = rec.set_time_minutes
+    #         target_time = time(get_set_time_hours, get_set_time_minutes)
+
+    #         hour_value_in = attendace_check_in.hour + (attendace_check_in.minute / 60.0)
+    #         hour_value_out = attendace_check_out.hour + (attendace_check_out.minute / 60.0)
+
+
+    #         if (check_in_hour, check_in_minutes) < (target_time.hour, target_time.minute):
+    #             if (attendance_record.check_out - attendance_record.check_in).total_seconds() / 3600.0 < 8.0:
+    #                 pass
+    #                 # results['shortage'] = {}
+    #                 # results['shortage']['hours'] = (8 - ((attendance_record.check_out - attendance_record.check_in).total_seconds() / 3600.0))*60 //60
+    #                 # results['shortage']['minutes'] = (8 - ((attendance_record.check_out - attendance_record.check_in).total_seconds() / 3600.0))*60 % 60
+    #             else:
+    #                 results['overtime'] = {}
+    #                 results['overtime']['hours'] = (((attendance_record.check_out - attendance_record.check_in).total_seconds() / 3600.0) - 8.0) *60 //60
+    #                 results['overtime']['minutes'] = (((attendance_record.check_out - attendance_record.check_in).total_seconds() / 3600.0) - 8.0) *60 %60
 
         
-            else:
-                results['lateatt'] = {}
-                results['lateatt']['hours'] = (((hour_value_in + 2.0) - 10.5) * 60) // 60
-                # results['lateatt']['hours'] = (((hour_value_in + 0) - 9.5) * 60) // 60
-                results['lateatt']['minutes'] = (((hour_value_in + 2.0) - 10.5) * 60) % 60
-                # results['lateatt']['minutes'] = (((hour_value_in + 0) - 9.5) * 60) % 60
+    #         else:
+    #             results['lateatt'] = {}
+    #             results['lateatt']['hours'] = (((hour_value_in + 2.0) - 10.5) * 60) // 60
+    #             # results['lateatt']['hours'] = (((hour_value_in + 0) - 9.5) * 60) // 60
+    #             results['lateatt']['minutes'] = (((hour_value_in + 2.0) - 10.5) * 60) % 60
+    #             # results['lateatt']['minutes'] = (((hour_value_in + 0) - 9.5) * 60) % 60
 
 
-                if (attendance_record.check_out - attendance_record.check_in).total_seconds() / 3600.0 < 8.0:
-                    pass
-                    # results['shortage'] = {}
-                    # results['shortage']['hours'] = (8 - ((attendance_record.check_out - attendance_record.check_in).total_seconds() / 3600.0))*60 //60
-                    # results['shortage']['minutes'] = (8 - ((attendance_record.check_out - attendance_record.check_in).total_seconds() / 3600.0))*60 % 60
+    #             if (attendance_record.check_out - attendance_record.check_in).total_seconds() / 3600.0 < 8.0:
+    #                 pass
+    #                 # results['shortage'] = {}
+    #                 # results['shortage']['hours'] = (8 - ((attendance_record.check_out - attendance_record.check_in).total_seconds() / 3600.0))*60 //60
+    #                 # results['shortage']['minutes'] = (8 - ((attendance_record.check_out - attendance_record.check_in).total_seconds() / 3600.0))*60 % 60
 
 
             
             
 
-        else:
-            results['extradays'] = {}
-            hour_value_in = attendace_check_in.hour + (attendace_check_in.minute / 60.0)
-            hour_value_out = attendace_check_out.hour + (attendace_check_out.minute / 60.0)
-            worked_hours = hour_value_out - hour_value_in
-            results['extradays']['hours'] = (worked_hours * 60) // 60
-            results['extradays']['minutes'] = (worked_hours * 60) % 60
+    #     else:
+    #         results['extradays'] = {}
+    #         hour_value_in = attendace_check_in.hour + (attendace_check_in.minute / 60.0)
+    #         hour_value_out = attendace_check_out.hour + (attendace_check_out.minute / 60.0)
+    #         worked_hours = hour_value_out - hour_value_in
+    #         results['extradays']['hours'] = (worked_hours * 60) // 60
+    #         results['extradays']['minutes'] = (worked_hours * 60) % 60
 
-        return results
+    #     return results
 
 
 
