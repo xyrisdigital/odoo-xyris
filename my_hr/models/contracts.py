@@ -66,7 +66,7 @@ class mycontracts(models.Model):
                 self.env['mail.activity'].create({
                 'res_id': get_data_id[rec],
                 'res_model_id': self.env['ir.model'].search([('model', '=', 'hr.contract')]).id,
-                'user_id': 61,
+                'user_id': 7,
                 'summary': 'Preparation Period',
                 'note': 'Preparation Period Will Expire',
                 'activity_type_id': 4,
@@ -101,7 +101,7 @@ class mycontracts(models.Model):
                 self.env['mail.activity'].create({
                 'res_id': get_data_id[rec],
                 'res_model_id': self.env['ir.model'].search([('model', '=', 'hr.contract')]).id,
-                'user_id': 61,
+                'user_id': 7,
                 'summary': 'Contract Period',
                 'note': 'Contract Period Will Expire',
                 'activity_type_id': 4,
