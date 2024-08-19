@@ -17,6 +17,10 @@
                         <field name="day_amount"/>
                     </group>
                 </xpath>
+                <xpath expr="//field[@name='contract_type_id']" position='after'>
+                    <field name='preparation_type'/>
+                    <field name='contract_type'/>
+                </xpath>
             </field>
         </record>
     </data>
