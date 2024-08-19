@@ -58,7 +58,7 @@ class mycontracts(models.Model):
         get_data_check_contract = []
         get_date_now = datetime.now().date()
         for rec in range(get_length):
-            get_data.append((get_data_contract[rec]['date_start'] + timedelta(days=60)))
+            get_data.append((get_data_contract[rec]['date_start'] + timedelta(days=69)))
             get_data_id.append(get_data_contract[rec]['id'])
             get_data_check.append(get_data_contract[rec]['preparation_type'])
             get_data_check_contract.append(get_data_contract[rec]['contract_type'])
