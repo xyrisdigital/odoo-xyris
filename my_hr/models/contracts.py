@@ -42,7 +42,7 @@ class mycontracts(models.Model):
 
     day_amount = fields.Float(string="Deduced Days/Day")
 
-    preparation_type = fields.Boolean(string="Preparation Period", default=False)
+    preparation_type = fields.Boolean(string="Probation Period", default=False)
     contract_type = fields.Boolean(string="Contract Period", default=False)
 
 
