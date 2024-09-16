@@ -58,7 +58,7 @@ class mycontracts(models.Model):
         get_data_check_contract = []
         get_date_now = datetime.now().date()
         for rec in range(get_length):
-            get_data.append((get_data_contract[rec]['date_start'] + timedelta(days=69)))
+            get_data.append((get_data_contract[rec]['date_start'] + timedelta(days=45)))
             get_data_id.append(get_data_contract[rec]['id'])
             get_data_check.append(get_data_contract[rec]['preparation_type'])
             get_data_check_contract.append(get_data_contract[rec]['contract_type'])
@@ -67,8 +67,18 @@ class mycontracts(models.Model):
                 'res_id': get_data_id[rec],
                 'res_model_id': self.env['ir.model'].search([('model', '=', 'hr.contract')]).id,
                 'user_id': 7,
-                'summary': 'Preparation Period',
-                'note': 'Preparation Period Will Expire',
+                'summary': 'Probation Period',
+                'note': 'Probation Period Will Expire',
+                'activity_type_id': 4,
+                'date_deadline': datetime.now().today(),
+                # 'date_deadline': date_deadline,
+            })
+                self.env['mail.activity'].create({
+                'res_id': get_data_id[rec],
+                'res_model_id': self.env['ir.model'].search([('model', '=', 'hr.contract')]).id,
+                'user_id': 6,
+                'summary': 'Probation Period',
+                'note': 'Probation Period Will Expire',
                 'activity_type_id': 4,
                 'date_deadline': datetime.now().today(),
                 # 'date_deadline': date_deadline,
@@ -102,6 +112,16 @@ class mycontracts(models.Model):
                 'res_id': get_data_id[rec],
                 'res_model_id': self.env['ir.model'].search([('model', '=', 'hr.contract')]).id,
                 'user_id': 7,
+                'summary': 'Contract Period',
+                'note': 'Contract Period Will Expire',
+                'activity_type_id': 4,
+                'date_deadline': datetime.now().today(),
+                # 'date_deadline': date_deadline,
+            })
+                self.env['mail.activity'].create({
+                'res_id': get_data_id[rec],
+                'res_model_id': self.env['ir.model'].search([('model', '=', 'hr.contract')]).id,
+                'user_id': 6,
                 'summary': 'Contract Period',
                 'note': 'Contract Period Will Expire',
                 'activity_type_id': 4,
