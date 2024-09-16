@@ -42,6 +42,11 @@
                             <field name='emp_documents' string="" widget="many2many_binary"/>
                         </group>
                     </page>
+                    <page name="attachments" string="Employee Information">
+                        <group>
+                            <field name='hiring_date'/>
+                        </group>
+                    </page>
                 </xpath>
             </field>
         </record>

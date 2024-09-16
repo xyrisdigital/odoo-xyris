@@ -26,6 +26,15 @@ class MyCustomEmployee(models.AbstractModel):
     title_ar = fields.Char(related="job_id.name_ar")
 
     emp_documents = fields.Many2many('ir.attachment', string="Hiring Documents", help='Please attach Documents', copy=False)
+
+
+class InheritEmployee(models.Model):
+    _inherit = 'hr.employee'
+
+
+    hiring_date = fields.Date(string="Hiring Date")
+    
+            
     
         
 
