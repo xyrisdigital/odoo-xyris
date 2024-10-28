@@ -10,20 +10,6 @@ import pytz
 import math
 
 
-def haversine(self, lon1, lat1, lon2, lat2):
-    # Convert latitude and longitude from degrees to radians
-    lon1, lat1, lon2, lat2 = map(math.radians, [lon1, lat1, lon2, lat2])
-
-    # Haversine formula
-    dlon = lon2 - lon1
-    dlat = lat2 - lat1
-    a = math.sin(dlat / 2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2)**2
-    c = 2 * math.asin(math.sqrt(a))
-
-    # Radius of earth in kilometers. Use 3956 for miles. Determines return value units.
-    r = 6371
-    return c * r
-
 
 class myAttendance(models.Model):
     _inherit = 'hr.attendance'
@@ -35,6 +21,19 @@ class myAttendance(models.Model):
     has_leave = fields.Boolean(string="Has Leave", compute="_compute_has_leave")
     remote = fields.Boolean(string="Remote", default=True)
 
+    def haversine(self, lon1, lat1, lon2, lat2):
+        # Convert latitude and longitude from degrees to radians
+        lon1, lat1, lon2, lat2 = map(math.radians, [lon1, lat1, lon2, lat2])
+
+        # Haversine formula
+        dlon = lon2 - lon1
+        dlat = lat2 - lat1
+        a = math.sin(dlat / 2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2)**2
+        c = 2 * math.asin(math.sqrt(a))
+
+        # Radius of earth in kilometers. Use 3956 for miles. Determines return value units.
+        r = 6371
+        return c * r
 
 
     @api.depends('check_in', 'check_out')
@@ -345,11 +344,10 @@ class myAttendance(models.Model):
 
     @api.model
     def create(self, values):
-        record = super(myAttendance, self).create(values)
 
-        fixed_lon = 29.9892736
-        fixed_lat = 31.2737792
-
+        fixed_lon = 29.98001627049323
+        fixed_lat = 31.282517606360127
+        
         record_lon = values.get('in_latitude')
         record_lat = values.get('in_longitude')
 
@@ -359,13 +357,11 @@ class myAttendance(models.Model):
 
             distance_in_meters = distance * 1000
 
-            if distance_in_meters > 200:
-                record.remote = True
+            if distance_in_meters > 500:
+                values['remote'] = True
             else:
-                record.remote = False
-
-        # self.create_att_effects(record)
-        return record
+                values['remote'] = False
+        return super(myAttendance, self).create(values)
 
 
 

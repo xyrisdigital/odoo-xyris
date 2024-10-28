@@ -9,7 +9,6 @@ from ...project_api.controllers.login import validate_token
 
 class crmWebsite(http.Controller):
 
-    @validate_token
     @http.route('/ws-lead', auth="public", methods=['POST'], csrf=False)
     def insert_lead(self, **kwargs):
 

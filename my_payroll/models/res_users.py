@@ -20,7 +20,7 @@ class UserAtt(models.Model):
             'total_overtime',
             'attendance_manager_id',
             'display_extra_hours',
-            'total_wfh'
+            'total_wfh',
         ]
 
     @api.depends('employee_id')
