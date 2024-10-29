@@ -116,6 +116,7 @@
                     <field name="percentage" widget="percentpie"/>
                     <field name="is_working_day"/>
                     <field name="has_leave"/>
+                    <field name="leave_type"/>
                     <field name="remote"/>
                 </xpath>
             </field>

@@ -20,6 +20,35 @@ class myAttendance(models.Model):
     is_working_day = fields.Boolean(string="Is_work", compute="_compute_is_work_day", store=True)
     has_leave = fields.Boolean(string="Has Leave", compute="_compute_has_leave")
     remote = fields.Boolean(string="Remote", default=True)
+    leave_type = fields.Char(string="Leave Type", compute="_compute_leave_type")
+
+
+    @api.depends('employee_id', 'has_leave')
+    def _compute_leave_type(self):
+        for att in self:
+            if att.has_leave == True:
+                leave = self.env['hr.leave'].search([
+                    ('employee_id', '=', att.employee_id.id), 
+                    ('number_of_days', '<', 1),
+                    ('date_from', '>=', att.check_in.date()),
+                    ('date_from', '<', (att.check_in + timedelta(days=1)).date())
+                    ])
+                
+                if leave:
+                    for req in leave:
+                        date1 = fields.Date.to_date(req.date_from)
+                        date2 = fields.Date.to_date(att.check_in)
+
+                        if date1 == date2:
+                            att.leave_type = leave.holiday_status_id.name
+                        else:
+                            att.leave_type = None
+                else:
+                    att.leave_type = None
+            else:
+                att.leave_type = None
+
+
 
     def haversine(self, lon1, lat1, lon2, lat2):
         # Convert latitude and longitude from degrees to radians
