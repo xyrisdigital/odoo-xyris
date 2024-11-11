@@ -14,6 +14,7 @@
 
         <menuitem id="hr_employee_documents_data" parent="hr.menu_hr_employee_payroll" name="Employees Documents" action="hr_employees_documents_action"/>
         <menuitem id="hr_documents_data" parent="hr.menu_human_resources_configuration" name="Documents" action="hr_documents_action"/>
+        <!-- <menuitem id="employee_attendance_report_menu" parent="hr.menu_human_resources_configuration" name="Attendance Report" action="action_employee_attendance_wizard"/> -->
 
 
         <record id="view_employee_documents_tree" model="ir.ui.view">

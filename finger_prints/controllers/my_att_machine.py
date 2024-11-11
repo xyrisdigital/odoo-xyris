@@ -4,6 +4,16 @@ import json
 from datetime import datetime, timedelta
 import time
 import requests
+import pytz
+
+
+cairo_tz = pytz.timezone('Africa/Cairo')
+
+# Get the current UTC offset for Cairo timezone
+cairo_offset = cairo_tz.utcoffset(datetime.now())
+
+# Convert offset to total hours
+offset_hours = cairo_offset.total_seconds() / 3600
 
 
 
@@ -91,8 +101,8 @@ class SPInt(http.Controller):
 
                     model = http.request.env['hr.attendance'].sudo()
 
-                    check_in = date1 - timedelta(hours=3)
-                    check_out = date2 - timedelta(hours=3)
+                    check_in = date1 - timedelta(hours=offset_hours)
+                    check_out = date2 - timedelta(hours=offset_hours)
 
                     new_attendance_record = model.create({
                         'employee_id': employee_id,

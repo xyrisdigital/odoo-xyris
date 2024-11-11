@@ -62,7 +62,7 @@ class mycontracts(models.Model):
             get_data_id.append(get_data_contract[rec]['id'])
             get_data_check.append(get_data_contract[rec]['preparation_type'])
             get_data_check_contract.append(get_data_contract[rec]['contract_type'])
-            if get_data[rec] <= get_date_now and get_data_check[rec] == True:
+            if get_data[rec] == get_date_now and get_data_check[rec] == True:
                 self.env['mail.activity'].create({
                 'res_id': get_data_id[rec],
                 'res_model_id': self.env['ir.model'].search([('model', '=', 'hr.contract')]).id,
@@ -107,7 +107,7 @@ class mycontracts(models.Model):
             # get_data_check.append(get_data_contract[rec]['preparation_type'])
             get_data_check_contract.append(get_data_contract[rec]['contract_type'])
             
-            if get_data[rec] <= get_date_now and get_data_check_contract[rec] == True:
+            if get_data[rec] == get_date_now and get_data_check_contract[rec] == True:
                 self.env['mail.activity'].create({
                 'res_id': get_data_id[rec],
                 'res_model_id': self.env['ir.model'].search([('model', '=', 'hr.contract')]).id,

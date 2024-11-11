@@ -1,0 +1,59 @@
+<odoo>
+    <data>
+        <record id="att_report_action" model="ir.actions.act_window">
+            <field name="name">Attendace Report</field>
+            <field name="res_model">att.report</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+
+        
+        <menuitem id="att_report_menu" parent="hr_attendance.menu_hr_attendance_root" name="Attendance Report"/>
+        <menuitem id="att_report_1" parent="att_report_menu" name="Attendance Report" action="att_report_action"/> 
+        <menuitem id="att_report_2" parent="att_report_menu" name="Report Wizard" action="action_employee_attendance_wizard"/> 
+        
+        
+
+        <record id="att_report_tree" model="ir.ui.view">
+            <field name="name">att.report.tree</field>
+            <field name="model">att.report</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="employee_id"/>
+                    <field name="employee_name"/>
+                    <field name="required_hours"/>
+                    <field name="remote_hours"/>
+                    <field name="office_hours"/>
+                    <field name="excuses"/>
+                    <field name="overtime"/>
+                    <field name="total_hours"/>
+                    <field name="percentage"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="att_report_form" model="ir.ui.view">
+            <field name="name">att.report.form</field>
+            <field name="model">att.report</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="employee_name"/>
+                            <field name="required_hours"/>
+                            <field name="remote_hours"/>
+                            <field name="office_hours"/>
+                            <field name="excuses"/>
+                            <field name="overtime"/>
+                            <field name="total_hours"/>
+                            <field name="percentage"/>
+                        </group>                           
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

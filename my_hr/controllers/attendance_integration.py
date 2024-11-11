@@ -3,7 +3,16 @@ from odoo.http import request
 from datetime import datetime, timedelta
 import json
 import requests
+import pytz
 
+
+cairo_tz = pytz.timezone('Africa/Cairo')
+
+# Get the current UTC offset for Cairo timezone
+cairo_offset = cairo_tz.utcoffset(datetime.now())
+
+# Convert offset to total hours
+offset_hours = cairo_offset.total_seconds() / 3600
 
 class att_emp(http.Controller):
 
@@ -44,8 +53,8 @@ class att_emp(http.Controller):
             check_in_dt = datetime.strptime(check_in_str, '%Y-%m-%d %H:%M:%S')
             check_out_dt = datetime.strptime(check_out_str, '%Y-%m-%d %H:%M:%S')
 
-            check_in = check_in_dt - timedelta(hours=3)
-            check_out = check_out_dt - timedelta(hours=3)
+            check_in = check_in_dt - timedelta(hours=offset_hours)
+            check_out = check_out_dt - timedelta(hours=offset_hours)
 
             model = http.request.env['hr.attendance'].sudo()
 
