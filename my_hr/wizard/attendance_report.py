@@ -18,4 +18,4 @@ class ReportWizard(models.TransientModel):
         # Run your SQL query
         get_function = self.env['att.report'].sudo().search([])
 
-        get_function.calculate_report()
+        get_function.calculate_report(self.public_days, self.start_date, self.end_date)
